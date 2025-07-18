@@ -1,8 +1,11 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Linkedin as LinkedIn, Instagram, Facebook, Globe } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Footer() {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+  
   return (
     <footer className="bg-black text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -11,7 +14,7 @@ export default function Footer() {
           <div>
             <div className="mb-3 -ml-8">
               <Link to="/" onClick={() => window.scrollTo(0, 0)}>
-                <img src="/Logo bianco.png" alt="Edil Gamal Logo" className="h-24" />
+                <img src="/logo-bianco.png" alt="Edil Gamal Logo" className="h-24" />
               </Link>
             </div>
             <p className="font-body text-gray-400 mb-3 tracking-wide text-sm">
@@ -19,13 +22,13 @@ export default function Footer() {
               realizzazione di progetti di qualità.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">
                 <LinkedIn className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">
                 <Facebook className="w-5 h-5" />
               </a>
             </div>
@@ -35,12 +38,22 @@ export default function Footer() {
           <div>
             <h4 className="font-heading text-lg font-semibold mb-4 tracking-tight">Collegamenti rapidi</h4>
             <ul className="space-y-2 font-body tracking-wide">
-              <li><a href="#home" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Home</a></li>
-              <li><a href="#about" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Chi siamo</a></li>
-              <li><a href="#projects" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Progetti</a></li>
-              <li><a href="#sustainability" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Sostenibilità</a></li>
-              <li><a href="#news" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>News</a></li>
-              <li><a href="#contact" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Contatti</a></li>
+              <li>
+                {isHomePage ? (
+                  <a href="#home" className="text-gray-300 hover:text-white transition-colors duration-200">Home</a>
+                ) : (
+                  <Link to="/" onClick={() => window.scrollTo(0, 0)} className="text-gray-300 hover:text-white transition-colors duration-200">Home</Link>
+                )}
+              </li>
+              <li>
+                <Link to="/chi-siamo" onClick={() => window.scrollTo(0, 0)} className="text-gray-300 hover:text-white transition-colors duration-200">Chi siamo</Link>
+              </li>
+              <li>
+                <Link to="/approfondimenti" onClick={() => window.scrollTo(0, 0)} className="text-gray-300 hover:text-white transition-colors duration-200">Approfondimenti</Link>
+              </li>
+              <li>
+                <Link to="/contatti" onClick={() => window.scrollTo(0, 0)} className="text-gray-300 hover:text-white transition-colors duration-200">Contatti</Link>
+              </li>
             </ul>
           </div>
 
@@ -48,11 +61,11 @@ export default function Footer() {
           <div>
             <h4 className="font-heading text-lg font-semibold mb-6 tracking-tight">Servizi</h4>
             <ul className="space-y-2 font-body tracking-wide">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Costruzioni civili</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Restauro</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Ristrutturazioni</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Progettazione</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Consulenza</a></li>
+              <li><span className="text-gray-300">Costruzioni civili</span></li>
+              <li><span className="text-gray-300">Restauro</span></li>
+              <li><span className="text-gray-300">Ristrutturazioni</span></li>
+              <li><span className="text-gray-300">Progettazione</span></li>
+              <li><span className="text-gray-300">Consulenza</span></li>
             </ul>
           </div>
 

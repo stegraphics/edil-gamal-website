@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FadeInSection } from '../components/FadeInSection';
+import OptimizedImage from '../components/OptimizedImage';
+import { useImagePreload } from '../hooks/useImagePreload';
 import { ArrowRight, Building2, Calculator, Hammer, Palette, Settings, ThermometerSun, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Insights() {
@@ -20,7 +23,8 @@ export default function Insights() {
       color: "red",
       readTime: "8 min",
       category: "Gestione Progetti",
-      content: "Scopri come il nostro approccio General Contractor ottimizza tempi, costi e qualità del tuo progetto edilizio."
+      content: "Scopri come il nostro approccio General Contractor ottimizza tempi, costi e qualità del tuo progetto edilizio.",
+      image: "/crop-architect-opening-blueprint.jpg"
     },
     {
       id: 2,
@@ -30,7 +34,8 @@ export default function Insights() {
       color: "gray",
       readTime: "6 min",
       category: "Tecniche Costruttive",
-      content: "Confronto dettagliato tra cartongesso e muratura tradizionale per aiutarti nella scelta migliore."
+      content: "Confronto dettagliato tra cartongesso e muratura tradizionale per aiutarti nella scelta migliore.",
+      image: "/full-shot-people-carrying-placard-together.jpg"
     },
     {
       id: 3,
@@ -40,7 +45,8 @@ export default function Insights() {
       color: "red",
       readTime: "5 min",
       category: "Impianti",
-      content: "Vantaggi, tipologie e considerazioni per l'installazione del riscaldamento radiante."
+      content: "Vantaggi, tipologie e considerazioni per l'installazione del riscaldamento radiante.",
+      image: "/service-man-instelling-house-heating-system-floor.jpg"
     },
     {
       id: 4,
@@ -50,7 +56,8 @@ export default function Insights() {
       color: "gray",
       readTime: "7 min",
       category: "Design Interni",
-      content: "Guida alla scelta cromatica per creare ambienti armoniosi e funzionali."
+      content: "Guida alla scelta cromatica per creare ambienti armoniosi e funzionali.",
+      image: "/scenery-designers-work.jpg"
     },
     {
       id: 5,
@@ -60,50 +67,108 @@ export default function Insights() {
       color: "red",
       readTime: "6 min",
       category: "Pavimentazioni",
-      content: "Tutto quello che devi sapere sulla posa del parquet e le diverse essenze disponibili."
+      content: "Tutto quello che devi sapere sulla posa del parquet e le diverse essenze disponibili.",
+      image: "/pavimento-piastrellato-uomo-vista-dall-alto.jpg"
     }
   ];
 
-  // Auto-scroll functionality
-  useEffect(() => {
-    if (!isAutoPlaying || isTransitioning) return;
-    
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
-        prevIndex === insights.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000); // Increased to 5 seconds for better UX
-
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, isTransitioning, insights.length]);
-
-  // Smooth transition with debouncing
-  const handleTransition = (newIndex) => {
+  // Estrai le immagini per il precaricamento
+  const carouselImages = insights.map(insight => insight.image);
+  
+  // Usa il hook per il precaricamento intelligente con opzioni avanzate
+  const { isImageLoaded, setCurrentIndex: setPreloadIndex, forcePreload, loadedCount, totalCount } = useImagePreload(carouselImages, {
+    priority: true,
+    preloadNext: 4, // Aumentato da 2 a 4 per precaricare più immagini
+    preloadAll: true // Precarica tutte le immagini immediatamente
+  });
+  
+  // Smooth transition with debouncing and RAF for better performance (ottimizzato con useCallback)
+  const handleTransition = useCallback((newIndex) => {
     if (isTransitioning) return;
     
     setIsTransitioning(true);
-    setCurrentIndex(newIndex);
     
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 800); // Match the CSS transition duration
-  };
+    // Usa requestAnimationFrame per sincronizzare con il refresh del browser
+    requestAnimationFrame(() => {
+      setCurrentIndex(newIndex);
+      setPreloadIndex(newIndex); // Sincronizza con il precaricamento
+      
+      // Precarica anche l'immagine successiva e precedente per navigazione bidirezionale
+      const nextIndex = newIndex === insights.length - 1 ? 0 : newIndex + 1;
+      const prevIndex = newIndex === 0 ? insights.length - 1 : newIndex - 1;
+      
+      // Precarica in modo asincrono per non bloccare l'UI
+      // Ridotto il tempo di attesa e uso di requestAnimationFrame per migliore sincronizzazione
+      requestAnimationFrame(() => {
+        setPreloadIndex(nextIndex);
+        requestAnimationFrame(() => setPreloadIndex(prevIndex));
+      });
+      
+      // Reset della transizione dopo l'animazione usando RAF per migliori performance
+      const startTime = performance.now();
+      const duration = 300; // Ridotto da 800ms a 300ms per transizioni più veloci
+      
+      const animateTransition = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        if (elapsed >= duration) {
+          setIsTransitioning(false);
+          return;
+        }
+        requestAnimationFrame(animateTransition);
+      };
+      
+      requestAnimationFrame(animateTransition);
+    });
+  }, [isTransitioning, insights.length, setPreloadIndex]);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     const newIndex = currentIndex === insights.length - 1 ? 0 : currentIndex + 1;
     handleTransition(newIndex);
-  };
+  }, [currentIndex, insights.length, handleTransition]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     const newIndex = currentIndex === 0 ? insights.length - 1 : currentIndex - 1;
     handleTransition(newIndex);
-  };
+  }, [currentIndex, insights.length, handleTransition]);
 
-  const goToSlide = (index) => {
+  const goToSlide = useCallback((index) => {
     if (index !== currentIndex) {
       handleTransition(index);
     }
-  };
+  }, [currentIndex, handleTransition]);
+
+  // Forza il precaricamento all'avvio
+  useEffect(() => {
+    forcePreload();
+  }, [forcePreload]);
+
+  // Auto-scroll functionality ottimizzato con RAF
+  useEffect(() => {
+    if (!isAutoPlaying || isTransitioning) return;
+    
+    let rafId;
+    let lastTime = 0;
+    const interval = 5000; // 5 seconds for better UX
+    
+    const tick = (timestamp) => {
+      if (!lastTime) lastTime = timestamp;
+      
+      const elapsed = timestamp - lastTime;
+      
+      if (elapsed >= interval) {
+        lastTime = timestamp;
+        nextSlide();
+      }
+      
+      rafId = requestAnimationFrame(tick);
+    };
+    
+    rafId = requestAnimationFrame(tick);
+    
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
+  }, [isAutoPlaying, isTransitioning, nextSlide]);
 
   // Touch handlers for mobile
   const handleTouchStart = (e) => {
@@ -170,12 +235,16 @@ export default function Insights() {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {/* Carousel Track */}
+              {/* Carousel Track ottimizzato */}
               <div 
-                className="flex transition-transform duration-800 ease-out will-change-transform"
+                className="flex transition-transform duration-800 ease-out will-change-transform hardware-accelerated"
                 style={{ 
                   transform: `translateX(-${currentIndex * 100}%)`,
-                  transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                  transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  willChange: 'transform',
+                  backfaceVisibility: 'hidden',
+                  perspective: '1000px',
+                  transformStyle: 'preserve-3d'
                 }}
               >
                 {insights.map((insight, index) => {
@@ -241,10 +310,27 @@ export default function Insights() {
 
                          {/* Image Side */}
                           <div className="relative bg-gray-100 lg:col-span-1">
-                            <img 
-                              src={insight.id === 1 ? "/crop-architect-opening-blueprint.jpg" : insight.id === 2 ? "/full-shot-people-carrying-placard-together.jpg" : insight.id === 3 ? "/service-man-instelling-house-heating-system-floor.jpg" : insight.id === 4 ? "/scenery-designers-work.jpg" : insight.id === 5 ? "/pavimento-piastrellato-uomo-vista-dall-alto.jpg" : "/operai alto.jpg"}
+                            <OptimizedImage
+                              src={insight.image}
                               alt={`Progetto ${insight.title}`}
-                              className="w-full h-full object-cover grayscale"
+                              className="w-full h-full grayscale"
+                              priority={index <= 4} // Aumentato da 2 a 4 per dare priorità a più immagini
+                              style={{
+                                willChange: 'opacity, transform',
+                                transform: 'translateZ(0)',
+                                backfaceVisibility: 'hidden',
+                                imageRendering: 'auto',
+                                transition: 'opacity 300ms ease-out'
+                              }}
+                              onLoad={() => {
+                                // Notifica al browser che l'immagine è importante
+                                if ('requestIdleCallback' in window) {
+                                  // @ts-ignore
+                                  window.requestIdleCallback(() => {
+                                    // Opzionale: aggiungere qui logica per migliorare l'esperienza utente
+                                  }, { timeout: 200 });
+                                }
+                              }}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                             
@@ -267,9 +353,9 @@ export default function Insights() {
               <button 
                 onClick={prevSlide}
                 disabled={isTransitioning}
-                className={`absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 z-10 ${
+                className={`absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-150 z-10 cursor-pointer ${
                   isTransitioning 
-                    ? 'opacity-50 cursor-not-allowed' 
+                    ? 'opacity-50 pointer-events-none' 
                     : 'hover:bg-white/30 hover:scale-110 active:scale-95'
                 }`}
               >
@@ -279,9 +365,9 @@ export default function Insights() {
               <button 
                 onClick={nextSlide}
                 disabled={isTransitioning}
-                className={`absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 z-10 ${
+                className={`absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-150 z-10 cursor-pointer ${
                   isTransitioning 
-                    ? 'opacity-50 cursor-not-allowed' 
+                    ? 'opacity-50 pointer-events-none' 
                     : 'hover:bg-white/30 hover:scale-110 active:scale-95'
                 }`}
               >
@@ -295,11 +381,11 @@ export default function Insights() {
                     key={index}
                     onClick={() => goToSlide(index)}
                     disabled={isTransitioning}
-                    className={`w-3 h-3 rounded-full transition-all duration-500 ${
+                    className={`w-3 h-3 rounded-full transition-all duration-200 cursor-pointer ${
                       index === currentIndex 
                         ? 'bg-white scale-125 shadow-lg' 
                         : isTransitioning
-                        ? 'bg-white/30 cursor-not-allowed'
+                        ? 'bg-white/30 pointer-events-none'
                         : 'bg-white/50 hover:bg-white/70 hover:scale-110 active:scale-95'
                     }`}
                   />
@@ -309,8 +395,12 @@ export default function Insights() {
               {/* Progress Bar */}
               <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20">
                 <div 
-                  className="h-full bg-white transition-all duration-800 ease-out"
-                  style={{ width: `${((currentIndex + 1) / insights.length) * 100}%` }}
+                  className="h-full bg-white transition-all duration-300 ease-out hardware-accelerated"
+                  style={{ 
+                    width: `${((currentIndex + 1) / insights.length) * 100}%`,
+                    willChange: 'width',
+                    transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                  }}
                 />
               </div>
             </div>
@@ -320,15 +410,16 @@ export default function Insights() {
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 {/* Image */}
                 <div className="relative h-80 lg:h-auto">
-                  <img 
-                    src="/mani-di-uomini-d-affari-sul-tavolo-bianco-con-documenti-e-bozze.jpg" 
-                    alt="Team EDIL GAMAL - Expertise tecnica" 
-                    className="w-full h-full object-cover grayscale-image"
+                  <OptimizedImage
+                    src="/mani-di-uomini-d-affari-sul-tavolo-bianco-con-documenti-e-bozze.jpg"
+                    alt="Team EDIL GAMAL - Expertise tecnica"
+                    className="w-full h-full grayscale-image"
+                    priority={true}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                   <div className="absolute bottom-8 left-8">
                     <span className="bg-red-600 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-lg">
-                      25+ Anni di Esperienza
+                      35+ Anni di Esperienza
                     </span>
                   </div>
                 </div>
@@ -357,10 +448,10 @@ export default function Insights() {
                       <span className="text-gray-700 font-medium">Materiali di prima qualità</span>
                     </div>
                   </div>
-                  <button className="group inline-flex items-center text-red-600 hover:text-red-700 font-semibold text-lg">
+                  <Link to="/progetti#progetti" className="group inline-flex items-center text-red-600 hover:text-red-700 font-semibold text-lg">
                     Scopri i nostri progetti
                     <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -387,14 +478,14 @@ export default function Insights() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                   <button className="group inline-flex items-center px-8 py-4 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                   <Link to="/contatti#top" className="group inline-flex items-center px-8 py-4 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                      Richiedi Consulenza Gratuita
                      <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                   </button>
-                   <button className="group inline-flex items-center px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-300">
+                   </Link>
+                   <Link to="/progetti#progetti" className="group inline-flex items-center px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-300">
                      Scopri i Nostri Progetti
                      <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                   </button>
+                   </Link>
                  </div>
                </div>
              </div>

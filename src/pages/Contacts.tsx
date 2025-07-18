@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FadeInSection } from '../components/FadeInSection';
-import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { initEmailJS, sendEmail, EmailTemplateParams } from '../services/emailService';
 
 export default function Contacts() {
+  // Inizializza EmailJS
+  useEffect(() => {
+    initEmailJS();
+  }, []);
+  
+  useEffect(() => {
+    // Gestisce lo scrolling automatico quando la pagina viene caricata con un hash nella URL
+    if (window.location.hash === '#top') {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
   const [formData, setFormData] = useState({
     nome: '',
     tipologia: '',
@@ -13,6 +26,12 @@ export default function Contacts() {
     messaggio: '',
     privacy: false,
     trattamento: false
+  });
+  
+  const [submitStatus, setSubmitStatus] = useState({
+    submitted: false,
+    success: false,
+    message: ''
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -27,12 +46,70 @@ export default function Contacts() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Qui andrà la logica per inviare il form
-    console.log('Form data:', formData);
+    
+    // Validazione dei campi obbligatori
+    if (!formData.nome || !formData.email || !formData.telefono || !formData.tipologia || !formData.messaggio || !formData.privacy || !formData.trattamento) {
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'Per favore, compila tutti i campi obbligatori.'
+      });
+      return;
+    }
+    
+    // Validazione email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'Per favore, inserisci un indirizzo email valido.'
+      });
+      return;
+    }
+    
+    setSubmitStatus({ submitted: true, success: false, message: 'Invio in corso...' });
+    
+    const templateParams: EmailTemplateParams = {
+      from_name: formData.nome,
+      from_email: formData.email,
+      from_phone: formData.telefono,
+      client_type: formData.tipologia,
+      message: formData.messaggio,
+      to_email: 'info@edilgamal.it'
+    };
+    
+    sendEmail(templateParams)
+    .then((response) => {
+      console.log('SUCCESS!', response.status, response.text);
+      setSubmitStatus({
+        submitted: true,
+        success: true,
+        message: 'Messaggio inviato con successo! Ti risponderemo al più presto.'
+      });
+      // Reset del form
+      setFormData({
+        nome: '',
+        tipologia: '',
+        email: '',
+        telefono: '',
+        messaggio: '',
+        privacy: false,
+        trattamento: false
+      });
+    })
+    .catch((err) => {
+      console.error('FAILED...', err);
+      setSubmitStatus({
+        submitted: true,
+        success: false,
+        message: 'Si è verificato un errore durante l\'invio. Riprova più tardi o contattaci direttamente.'
+      });
+    });
   };
 
   return (
-    <div className="min-h-screen">
+    <div id="top" className="min-h-screen">
       <Header />
       <main className="pt-32 pb-20">
         {/* Hero section */}
@@ -73,7 +150,7 @@ export default function Contacts() {
                         required
                         value={formData.nome}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       />
                     </div>
 
@@ -87,7 +164,7 @@ export default function Contacts() {
                         required
                         value={formData.tipologia}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       >
                         <option value="">Seleziona...</option>
                         <option value="privato">Privato</option>
@@ -108,7 +185,7 @@ export default function Contacts() {
                         required
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       />
                     </div>
 
@@ -123,7 +200,7 @@ export default function Contacts() {
                         required
                         value={formData.telefono}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       />
                     </div>
 
@@ -138,7 +215,7 @@ export default function Contacts() {
                         rows={5}
                         value={formData.messaggio}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       ></textarea>
                     </div>
 
@@ -151,7 +228,7 @@ export default function Contacts() {
                           required
                           checked={formData.privacy}
                           onChange={handleInputChange}
-                          className="mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                          className="mt-1 h-4 w-4 text-red-600 focus:ring-1 focus:ring-red-500 border-gray-300 rounded"
                         />
                         <label htmlFor="privacy" className="ml-2 text-sm text-gray-700">
                           Presa visione dell'informativa Privacy* <a href="#" className="text-red-600 hover:underline">(leggi)</a>
@@ -165,7 +242,7 @@ export default function Contacts() {
                           required
                           checked={formData.trattamento}
                           onChange={handleInputChange}
-                          className="mt-1 h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                          className="mt-1 h-4 w-4 text-red-600 focus:ring-1 focus:ring-red-500 border-gray-300 rounded"
                         />
                         <label htmlFor="trattamento" className="ml-2 text-sm text-gray-700">
                           Autorizzazione al trattamento dati personali* <a href="#" className="text-red-600 hover:underline">(leggi)</a>
@@ -174,11 +251,23 @@ export default function Contacts() {
                       <p className="text-xs text-gray-500">* Campi obbligatori</p>
                     </div>
 
+                    {submitStatus.submitted && (
+                      <div className={`p-4 mb-4 rounded-lg flex items-center ${submitStatus.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+                        {submitStatus.success ? (
+                          <CheckCircle className="w-5 h-5 mr-2 flex-shrink-0" />
+                        ) : (
+                          <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0" />
+                        )}
+                        <p>{submitStatus.message}</p>
+                      </div>
+                    )}
+                    
                     <button
                       type="submit"
                       className="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200"
+                      disabled={submitStatus.submitted && submitStatus.success}
                     >
-                      Invia Messaggio
+                      {(submitStatus.submitted && submitStatus.success) ? 'Messaggio Inviato' : 'Invia Messaggio'}
                     </button>
                   </form>
                 </div>

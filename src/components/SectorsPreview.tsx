@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FadeInSection } from './FadeInSection';
+import './SectorsPreview.css';
 
-// Componente rimosso per utilizzare direttamente la classe CSS
+// Utilizziamo il file CSS personalizzato per gestire l'effetto hover
 
 export default function SectorsPreview() {
   const imageRef = useRef<HTMLImageElement>(null);
@@ -23,175 +24,80 @@ export default function SectorsPreview() {
           </div>
 
         <div className="flex justify-center">
-            <div ref={containerRef} className="relative overflow-hidden" style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                <div className="relative overflow-hidden" style={{ width: '100%', maxWidth: '1600px' }}>
-                <a href="#settori" className="block" onClick={() => window.scrollTo(0, 0)} style={{ position: 'relative', display: 'block', zIndex: 10 }}>
-                <img 
-                  ref={imageRef}
-                  src="/tutto top.png" 
-                  alt="Settori" 
-                  className="w-full h-auto object-cover rounded-lg shadow-lg hover:scale-103 transition-transform duration-300" 
-                  style={{
-                    width: '100%'
-                  }}
-                />
-                </a>
-                
-                {/* Overlay per i testi dei settori */}
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 25, pointerEvents: 'none' }}>
-                    
-                    {/* CIVILE PRIVATO */}
-                    <div 
-                      className="absolute bottom-16 left-0 w-1/3 flex justify-start pl-6"
-                      style={{ pointerEvents: 'auto' }}
-                    >
-                      <span 
-                        className="font-bold text-black text-lg hover:scale-105 transition-all duration-150 ease-out cursor-pointer"
-                        style={{
-                          textShadow: '1px 1px 2px rgba(255,255,255,0.8)',
-                          padding: '0 12px 4px 12px',
-                          display: 'inline-block',
-                          position: 'relative',
-                          borderBottom: '2px solid transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderBottomColor = '#dc2626';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderBottomColor = 'transparent';
-                        }}
-                      >
-                        CIVILE PRIVATO
-                      </span>
-                    </div>
-
-                    {/* RESIDENZIALE */}
-                    <div 
-                      className="absolute bottom-16 left-1/3 w-1/3 flex justify-start"
-                      style={{ marginLeft: '-190px', pointerEvents: 'auto' }}
-                    >
-                      <span 
-                        className="font-bold text-black text-lg hover:scale-105 transition-all duration-150 ease-out cursor-pointer"
-                        style={{
-                          textShadow: '1px 1px 2px rgba(255,255,255,0.8)',
-                          padding: '0 12px 4px 12px',
-                          display: 'inline-block',
-                          position: 'relative',
-                          borderBottom: '2px solid transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderBottomColor = '#dc2626';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderBottomColor = 'transparent';
-                        }}
-                      >
-                        RESIDENZIALE
-                      </span>
-                    </div>
-
-                    {/* INDUSTRIALE */}
-                    <div 
-                      className="absolute bottom-16 left-2/3 w-1/3 flex justify-start"
-                      style={{ marginLeft: '-400px', pointerEvents: 'auto' }}
-                    >
-                      <span 
-                        className="font-bold text-black text-lg hover:scale-105 transition-all duration-150 ease-out cursor-pointer"
-                        style={{
-                          textShadow: '1px 1px 2px rgba(255,255,255,0.8)',
-                          padding: '0 12px 4px 12px',
-                          display: 'inline-block',
-                          position: 'relative',
-                          borderBottom: '2px solid transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderBottomColor = '#dc2626';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderBottomColor = 'transparent';
-                        }}
-                      >
-                        INDUSTRIALE
-                      </span>
-                    </div>
-                    
-                    {/* RISTRUTTURAZIONE */}
-                    <div 
-                      className="absolute bottom-16 left-0 w-1/3 flex justify-start pl-6"
-                      style={{ marginLeft: '700px', pointerEvents: 'auto' }}
-                    >
-                      <span 
-                        className="font-bold text-black text-lg hover:scale-105 transition-all duration-150 ease-out cursor-pointer"
-                        style={{
-                          textShadow: '1px 1px 2px rgba(255,255,255,0.8)',
-                          padding: '0 12px 4px 12px',
-                          display: 'inline-block',
-                          position: 'relative',
-                          borderBottom: '2px solid transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderBottomColor = '#dc2626';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderBottomColor = 'transparent';
-                        }}
-                      >
-                        RISTRUTTURAZIONE
-                      </span>
-                    </div>
-
-                    {/* PUBBLICO */}
-                    <div 
-                      className="absolute bottom-16 left-0 w-1/3 flex justify-start pl-6"
-                      style={{ marginLeft: '980px', pointerEvents: 'auto' }}
-                    >
-                      <span 
-                        className="font-bold text-black text-lg hover:scale-105 transition-all duration-150 ease-out cursor-pointer"
-                        style={{
-                          textShadow: '1px 1px 2px rgba(255,255,255,0.8)',
-                          padding: '0 12px 4px 12px',
-                          display: 'inline-block',
-                          position: 'relative',
-                          borderBottom: '2px solid transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderBottomColor = '#dc2626';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderBottomColor = 'transparent';
-                        }}
-                      >
-                        PUBBLICO
-                      </span>
-                    </div>
-
-                    {/* ALBERGHIERO */}
-                    <div 
-                      className="absolute bottom-16 left-0 w-1/3 flex justify-start pl-6"
-                      style={{ marginLeft: '1200px', pointerEvents: 'auto' }}
-                    >
-                      <span 
-                        className="font-bold text-black text-lg hover:scale-105 transition-all duration-150 ease-out cursor-pointer"
-                        style={{
-                          textShadow: '1px 1px 2px rgba(255,255,255,0.8)',
-                          padding: '0 12px 4px 12px',
-                          display: 'inline-block',
-                          position: 'relative',
-                          borderBottom: '2px solid transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderBottomColor = '#dc2626';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderBottomColor = 'transparent';
-                        }}
-                      >
-                        ALBERGHIERO
-                      </span>
-                    </div>
-                    
+            <div ref={containerRef} className="relative" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                <div className="flex flex-row justify-between items-start gap-6 p-8">
+                  {/* Residenziale */}
+                  <div className="flex flex-col items-center">
+                    <img 
+                      src="/residenziale.svg" 
+                      alt="Residenziale" 
+                      className="sector-icon" 
+                    />
+                    <span className="sector-text">
+                      RESIDENZIALE
+                    </span>
+                  </div>
+                  
+                  {/* Palazzale */}
+                  <div className="flex flex-col items-center">
+                    <img 
+                      src="/palazzale.svg" 
+                      alt="Palazzale" 
+                      className="sector-icon" 
+                    />
+                    <span className="sector-text">
+                      CIVILE PRIVATO
+                    </span>
+                  </div>
+                  
+                  {/* Industriale */}
+                  <div className="flex flex-col items-center">
+                    <img 
+                      src="/INDUSTRIALE.svg" 
+                      alt="Industriale" 
+                      className="sector-icon" 
+                    />
+                    <span className="sector-text">
+                      INDUSTRIALE
+                    </span>
+                  </div>
+                  
+                  {/* Ristrutturazione */}
+                  <div className="flex flex-col items-center">
+                    <img 
+                      src="/RISTRUTTURAZIONE.svg" 
+                      alt="Ristrutturazione" 
+                      className="sector-icon" 
+                    />
+                    <span className="sector-text">
+                      RISTRUTTURAZIONE
+                    </span>
+                  </div>
+                  
+                  {/* Pubblico */}
+                  <div className="flex flex-col items-center pubblico-container">
+                    <img 
+                      src="/pubblico.svg" 
+                      alt="Pubblico" 
+                      className="sector-icon pubblico-icon" 
+                    />
+                    <span className="sector-text">
+                      PUBBLICO
+                    </span>
+                  </div>
+                  
+                  {/* Alberghiero */}
+                  <div className="flex flex-col items-center">
+                    <img 
+                      src="/alberghiero.svg" 
+                      alt="Alberghiero" 
+                      className="sector-icon" 
+                    />
+                    <span className="sector-text">
+                      ALBERGHIERO
+                    </span>
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>

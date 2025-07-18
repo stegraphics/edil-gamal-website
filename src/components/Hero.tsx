@@ -1,32 +1,84 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { FadeInSection } from './FadeInSection';
+import { useImagePreload } from '../hooks/useImagePreload';
 
 export default function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const sliderRef = useRef(null);
+  
   const images = [
     '/lavoro-serale.jpg',
     '/lavoro-casco.jpg'
   ];
 
-  // Funzione per cambiare immagine
-  const changeImage = (index) => {
-    // Assicurati che l'indice sia valido
-    if (index >= 0 && index < images.length) {
-      setCurrentImage(index);
-    }
-  };
-
-  // Effetto per lo scorrimento automatico delle immagini
+  // Usa il hook per il precaricamento intelligente con opzioni avanzate
+  const { isImageLoaded, setCurrentIndex, forcePreload } = useImagePreload(images, {
+    priority: true,
+    preloadNext: 1,
+    preloadAll: true // Precarica tutte le immagini immediatamente
+  });
+  
+  // Forza il precaricamento all'avvio
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }, 3000); // Cambia immagine ogni 3 secondi
+    forcePreload();
+  }, [forcePreload]);
 
-    return () => clearInterval(interval);
-  }, [images.length]);
+  // Funzione per cambiare immagine con transizione fluida (ottimizzata con useCallback)
+  const changeImage = useCallback((index) => {
+    if (index >= 0 && index < images.length && !isTransitioning) {
+      setIsTransitioning(true);
+      setCurrentImage(index);
+      setCurrentIndex(index);
+      
+      // Reset della transizione dopo l'animazione usando requestAnimationFrame
+      const startTime = performance.now();
+      const duration = 1000;
+      
+      const animateTransition = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        if (elapsed >= duration) {
+          setIsTransitioning(false);
+          return;
+        }
+        requestAnimationFrame(animateTransition);
+      };
+      
+      requestAnimationFrame(animateTransition);
+    }
+  }, [images.length, isTransitioning, setCurrentIndex]);
+
+  // Effetto per lo scorrimento automatico delle immagini (ottimizzato)
+  useEffect(() => {
+    let rafId;
+    let lastTime = 0;
+    const interval = 3000; // Cambia immagine ogni 3 secondi
+    
+    const tick = (timestamp) => {
+      if (!lastTime) lastTime = timestamp;
+      
+      const elapsed = timestamp - lastTime;
+      
+      if (elapsed >= interval) {
+        lastTime = timestamp;
+        setCurrentImage((prev) => {
+          const next = prev === images.length - 1 ? 0 : prev + 1;
+          setCurrentIndex(next);
+          return next;
+        });
+      }
+      
+      rafId = requestAnimationFrame(tick);
+    };
+    
+    rafId = requestAnimationFrame(tick);
+    
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
+  }, [images.length, setCurrentIndex]);
 
   // Gestione del trascinamento sulla barra di scorrimento
   const handleMouseDown = (e) => {
@@ -64,19 +116,13 @@ export default function Hero() {
     };
   }, [isDragging]);
 
-  // Precarica le immagini per evitare schermate grigie
-  useEffect(() => {
-    images.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, [images]);
+  // Precaricamento già gestito dal hook useImagePreload
 
-  // Definisci i link in base all'immagine corrente
-  const linkData = [
+  // Definisci i link in base all'immagine corrente (memorizzato)
+  const linkData = useMemo(() => [
     { text: 'Azienda', href: '#about' },
     { text: 'Progetti', href: '#projects' }
-  ];
+  ], []);
 
   // Seleziona il link in base all'immagine corrente
   const currentLink = linkData[currentImage];
@@ -85,14 +131,38 @@ export default function Hero() {
     <section id="home" className="relative h-[85vh] flex items-center justify-end overflow-hidden pt-20">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="flex w-[200%] transition-transform duration-1000 ease-in-out h-full" 
-             style={{ transform: `translateX(-${currentImage * 50}%)` }}>
+        <div className={`flex w-[200%] h-full transition-transform duration-700 ease-out hardware-accelerated ${
+          isTransitioning ? 'duration-1000' : ''
+        }`} 
+             style={{ 
+               transform: `translateX(-${currentImage * 50}%)`,
+               transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+               willChange: 'transform'
+             }}>
           {images.map((image, index) => (
             <div 
               key={index}
-              className="w-1/2 h-full bg-cover bg-center bg-no-repeat flex-shrink-0 grayscale-image"
-              style={{ backgroundImage: `url('${image}')` }}
-            />
+              className="w-1/2 h-full flex-shrink-0 relative"
+            >
+              {/* Placeholder per caricamento */}
+              {!isImageLoaded(image) && (
+                <div className="absolute inset-0 bg-gray-300 image-loading" />
+              )}
+              
+              {/* Immagine ottimizzata con hardware acceleration */}
+              <div
+                className={`w-full h-full bg-cover bg-center bg-no-repeat grayscale-image transition-opacity duration-300 hardware-accelerated ${
+                  isImageLoaded(image) ? 'opacity-100' : 'opacity-0'
+                }`}
+                style={{ 
+                  backgroundImage: `url('${image}')`,
+                  transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  willChange: 'opacity, transform',
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden'
+                }}
+              />
+            </div>
           ))}
         </div>
         {/* Separatore con opacità diverse */}

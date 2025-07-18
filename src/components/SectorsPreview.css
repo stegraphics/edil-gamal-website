@@ -1,0 +1,66 @@
+.sector-icon {
+  width: 160px;
+  height: 160px;
+  object-contain: contain;
+  transition: all 0.3s;
+}
+
+/* Icona residenziale ingrandita */
+.flex.flex-row.justify-between.items-start > div:first-child .sector-icon {
+  width: 220px;
+  height: 220px;
+}
+
+/* Icona alberghiero ridotta */
+.flex.flex-row.justify-between.items-start > div:last-child .sector-icon {
+  width: 120px;
+  height: 120px;
+  margin-top: 5px;
+}
+
+.pubblico-icon {
+  width: 200px;
+  height: 200px;
+}
+
+.pubblico-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Imposto una altezza fissa per tutti i contenitori delle icone */
+.flex.flex-row.justify-between.items-start > div {
+  height: 220px; /* Altezza fissa per tutti i contenitori */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Posiziono le icone in alto */
+.flex.flex-row.justify-between.items-start .sector-icon {
+  margin-bottom: auto;
+}
+
+/* Assicuro che tutti i testi siano allineati sulla stessa linea */
+.flex.flex-row.justify-between.items-start .sector-text {
+  margin-top: 0;
+}
+
+.sector-icon:hover {
+  transform: scale(1.1);
+  /* Filtro per colorare l'icona completamente di rosso */
+  filter: brightness(0) saturate(100%) invert(15%) sepia(95%) saturate(6932%) hue-rotate(357deg) brightness(109%) contrast(114%);
+  -webkit-filter: brightness(0) saturate(100%) invert(15%) sepia(95%) saturate(6932%) hue-rotate(357deg) brightness(109%) contrast(114%);
+}
+
+.sector-text {
+  font-weight: bold;
+  color: black;
+  font-size: 1.125rem;
+  margin-top: 1.5rem;
+  transition: color 0.15s;
+}
+
+.sector-text:hover {
+  color: #dc2626;
+}

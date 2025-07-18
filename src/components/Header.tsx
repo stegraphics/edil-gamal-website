@@ -26,7 +26,7 @@ export default function Header() {
   const navItems = [
     { name: 'Home', href: '/', path: '/' },
     { name: 'Chi siamo', href: isHomePage ? '#about' : '/chi-siamo', path: '/chi-siamo' },
-    { name: 'Progetti', href: isHomePage ? '#projects' : '/#projects', path: null },
+    { name: 'Progetti', href: '/progetti', path: '/progetti' },
     { name: 'Approfondimenti', href: '/approfondimenti', path: '/approfondimenti' },
     { name: 'Contatti', href: '/contatti', path: '/contatti' }
   ];
@@ -38,12 +38,12 @@ export default function Header() {
         <div className={`flex items-center justify-between transition-all duration-300 ease-in-out ${isCompact ? 'h-20 py-3' : 'h-32 py-8'}`}>
           {/* Logo */}
           <div className="flex items-center">
-            <div className="flex-shrink-0 mt-36 -ml-64">
+            <div className="flex-shrink-0">
               <Link to="/" onClick={() => window.scrollTo(0, 0)}>
                 <img 
-                  src="/Logo definitivo.svg" 
+                  src="/logo-bene.gif" 
                   alt="EDIL GAMAL Logo" 
-                  className={`transition-all duration-300 ease-in-out ${isCompact ? 'h-48' : 'h-64'}`} 
+                  className={`transition-all duration-300 ease-in-out ${isCompact ? 'h-48' : 'h-64'}`}
                 />
               </Link>
             </div>
