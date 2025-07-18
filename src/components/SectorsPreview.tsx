@@ -24,76 +24,76 @@ export default function SectorsPreview() {
           </div>
 
         <div className="flex justify-center">
-            <div ref={containerRef} className="relative" style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                <div className="flex flex-row justify-between items-start gap-6 p-8">
+            <div ref={containerRef} className="relative w-full" style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                <div className="flex flex-wrap md:flex-row justify-center md:justify-between items-start gap-6 p-4 md:p-8">
                   {/* Residenziale */}
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center justify-between">
                     <img 
                       src="/residenziale.svg" 
                       alt="Residenziale" 
-                      className="sector-icon" 
+                      className="sector-icon residenziale-icon" 
                     />
-                    <span className="sector-text">
+                    <span className="sector-text font-semibold">
                       RESIDENZIALE
                     </span>
                   </div>
                   
                   {/* Palazzale */}
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center justify-between">
                     <img 
                       src="/palazzale.svg" 
                       alt="Palazzale" 
                       className="sector-icon" 
                     />
-                    <span className="sector-text">
+                    <span className="sector-text font-semibold">
                       CIVILE PRIVATO
                     </span>
                   </div>
                   
                   {/* Industriale */}
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center justify-between">
                     <img 
                       src="/INDUSTRIALE.svg" 
                       alt="Industriale" 
                       className="sector-icon" 
                     />
-                    <span className="sector-text">
+                    <span className="sector-text font-semibold">
                       INDUSTRIALE
                     </span>
                   </div>
                   
                   {/* Ristrutturazione */}
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center justify-between">
                     <img 
                       src="/RISTRUTTURAZIONE.svg" 
                       alt="Ristrutturazione" 
                       className="sector-icon" 
                     />
-                    <span className="sector-text">
+                    <span className="sector-text font-semibold">
                       RISTRUTTURAZIONE
                     </span>
                   </div>
                   
                   {/* Pubblico */}
-                  <div className="flex flex-col items-center pubblico-container">
+                  <div className="flex flex-col items-center justify-between pubblico-container">
                     <img 
                       src="/pubblico.svg" 
                       alt="Pubblico" 
                       className="sector-icon pubblico-icon" 
                     />
-                    <span className="sector-text">
+                    <span className="sector-text font-semibold">
                       PUBBLICO
                     </span>
                   </div>
                   
                   {/* Alberghiero */}
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center justify-between">
                     <img 
                       src="/alberghiero.svg" 
                       alt="Alberghiero" 
-                      className="sector-icon" 
+                      className="sector-icon alberghiero-icon" 
                     />
-                    <span className="sector-text">
+                    <span className="sector-text font-semibold">
                       ALBERGHIERO
                     </span>
                   </div>

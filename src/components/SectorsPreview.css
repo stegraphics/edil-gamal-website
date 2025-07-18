@@ -1,26 +1,63 @@
 .sector-icon {
-  width: 160px;
-  height: 160px;
-  object-contain: contain;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
   transition: all 0.3s;
 }
 
-/* Icona residenziale ingrandita */
-.flex.flex-row.justify-between.items-start > div:first-child .sector-icon {
-  width: 220px;
-  height: 220px;
+@media (min-width: 768px) {
+  .sector-icon {
+    width: 160px;
+    height: 160px;
+  }
 }
 
-/* Icona alberghiero ridotta */
-.flex.flex-row.justify-between.items-start > div:last-child .sector-icon {
+.residenziale-icon {
   width: 120px;
   height: 120px;
-  margin-top: 5px;
+}
+
+@media (min-width: 768px) {
+  .residenziale-icon {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+.alberghiero-icon {
+  width: 120px;
+  height: 120px;
+}
+
+@media (min-width: 768px) {
+  .alberghiero-icon {
+    width: 180px;
+    height: 180px;
+  }
 }
 
 .pubblico-icon {
-  width: 200px;
-  height: 200px;
+  width: 140px;
+  height: 140px;
+}
+
+@media (min-width: 768px) {
+  .pubblico-icon {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.pubblico-icon {
+  width: 140px;
+  height: 140px;
+}
+
+@media (min-width: 768px) {
+  .pubblico-icon {
+    width: 200px;
+    height: 200px;
+  }
 }
 
 .pubblico-container {
@@ -30,20 +67,38 @@
 }
 
 /* Imposto una altezza fissa per tutti i contenitori delle icone */
-.flex.flex-row.justify-between.items-start > div {
-  height: 220px; /* Altezza fissa per tutti i contenitori */
+.flex.flex-wrap.md\:flex-row.justify-center.md\:justify-between.items-start > div {
+  height: 180px; /* Altezza fissa per tutti i contenitori su mobile */
   display: flex;
   flex-direction: column;
+  width: 40%; /* Su mobile, ogni elemento occupa circa metà della larghezza */
+  margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+  .flex.flex-wrap.md\:flex-row.justify-center.md\:justify-between.items-start > div {
+    height: 220px; /* Altezza fissa per tutti i contenitori su desktop */
+    width: auto; /* Su desktop, la larghezza è automatica */
+    margin-bottom: 0;
+  }
 }
 
 /* Posiziono le icone in alto */
-.flex.flex-row.justify-between.items-start .sector-icon {
+.flex.flex-wrap.md\:flex-row.justify-center.md\:justify-between.items-start .sector-icon {
   margin-bottom: auto;
 }
 
 /* Assicuro che tutti i testi siano allineati sulla stessa linea */
-.flex.flex-row.justify-between.items-start .sector-text {
+.flex.flex-wrap.md\:flex-row.justify-center.md\:justify-between.items-start .sector-text {
   margin-top: 0;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .flex.flex-wrap.md\:flex-row.justify-center.md\:justify-between.items-start .sector-text {
+    font-size: 1rem;
+  }
 }
 
 .sector-icon:hover {
