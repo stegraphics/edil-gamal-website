@@ -10,6 +10,14 @@
   
   body {
     font-family: 'Montserrat', sans-serif;
+    background-color: #0d0d0d;
+    color: white;
+  }
+
+  #root {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
   }
 }
 
@@ -38,6 +46,18 @@
 
 .fade-in-delay-300 {
   transition-delay: 300ms;
+}
+
+/* Stile per l'icona personalizzata della mappa */
+.custom-div-icon {
+  background: none;
+  border: none;
+}
+
+.custom-div-icon div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .fade-in-delay-400 {

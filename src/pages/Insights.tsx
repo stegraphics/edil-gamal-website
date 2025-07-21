@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { FadeInSection } from '../components/FadeInSection';
+import FadeInSection from '../components/FadeInSection';
 import OptimizedImage from '../components/OptimizedImage';
-import { useImagePreload } from '../hooks/useImagePreload';
+import useImagePreload from '../hooks/useImagePreload';
 import { ArrowRight, Building2, Calculator, Hammer, Palette, Settings, ThermometerSun, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Insights() {
@@ -195,7 +195,7 @@ export default function Insights() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: "#0d0d0d" }}>
       <Header />
       
       {/* Hero Section */}
@@ -255,7 +255,7 @@ export default function Insights() {
                     <div key={insight.id} className="w-full flex-shrink-0">
                        <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[500px]">
                          {/* Content Side */}
-                         <div className={`lg:col-span-2 p-10 lg:p-14 flex flex-col justify-center ${isRed ? 'bg-gradient-to-br from-red-600 to-red-700' : 'bg-gradient-to-br from-gray-700/95 to-gray-800/95'} relative overflow-hidden`}>
+                         <div className={`lg:col-span-2 p-10 lg:p-14 flex flex-col justify-center ${isRed ? 'bg-gradient-to-br from-red-600 to-red-700' : 'bg-[#2a2a2b]'} relative overflow-hidden`}>
                            {/* Overlay effects for both red and gray backgrounds */}
                            <div className="absolute inset-0 z-0">
                              {isRed ? (
@@ -406,7 +406,7 @@ export default function Insights() {
             </div>
 
             {/* Featured Section */}
-            <div className="bg-white shadow-xl overflow-hidden border border-gray-100 mb-16">
+            <div className="bg-black shadow-xl overflow-hidden mb-16">
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 {/* Image */}
                 <div className="relative h-80 lg:h-auto">
@@ -426,10 +426,10 @@ export default function Insights() {
 
                 {/* Content */}
                 <div className="p-12 flex flex-col justify-center">
-                  <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+                  <h3 className="text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight">
                     La nostra <span className="text-red-600">Expertise</span> al tuo servizio
                   </h3>
-                  <p className="text-gray-600 mb-8 leading-relaxed text-lg">
+                  <p className="text-gray-300 mb-8 leading-relaxed text-lg">
                     Ogni progetto EDIL GAMAL è il risultato di competenze tecniche consolidate, 
                     innovazione continua e attenzione maniacale ai dettagli. La nostra esperienza 
                     pluriennale ci permette di offrire soluzioni all'avanguardia.
@@ -437,15 +437,15 @@ export default function Insights() {
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Consulenza tecnica specializzata</span>
+                      <span className="text-gray-300 font-medium">Consulenza tecnica specializzata</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Soluzioni innovative e sostenibili</span>
+                      <span className="text-gray-300 font-medium">Soluzioni innovative e sostenibili</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                      <span className="text-gray-700 font-medium">Materiali di prima qualità</span>
+                      <span className="text-gray-300 font-medium">Materiali di prima qualità</span>
                     </div>
                   </div>
                   <Link to="/progetti#progetti" className="group inline-flex items-center text-red-600 hover:text-red-700 font-semibold text-lg">
@@ -457,7 +457,7 @@ export default function Insights() {
             </div>
 
             {/* Elegant CTA Section */}
-            <div className="py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+            <div className="py-20 bg-black relative overflow-hidden">
               <div className="absolute inset-0 opacity-5">
                 <div className="absolute top-10 left-10 w-32 h-32 bg-red-600 rounded-full blur-2xl"></div>
                 <div className="absolute bottom-10 right-10 w-40 h-40 bg-gray-600 rounded-full blur-3xl"></div>
@@ -465,13 +465,13 @@ export default function Insights() {
               
               <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
                 <div className="mb-8">
-                   <span className="inline-block text-black text-sm font-semibold tracking-wider uppercase mb-4">
+                   <span className="inline-block text-white text-sm font-semibold tracking-wider uppercase mb-4">
                      Inizia il tuo progetto
                    </span>
-                  <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                  <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
                     Hai un progetto <span className="text-red-600">in mente?</span>
                   </h3>
-                  <p className="text-gray-600 text-xl max-w-3xl mx-auto leading-relaxed mb-12">
+                  <p className="text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed mb-12">
                     Trasformiamo le tue idee in realtà con la nostra expertise tecnica e soluzioni innovative. 
                     Contattaci per una consulenza gratuita e scopri come possiamo realizzare il tuo progetto ideale.
                   </p>
@@ -482,7 +482,7 @@ export default function Insights() {
                      Richiedi Consulenza Gratuita
                      <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                    </Link>
-                   <Link to="/progetti#progetti" className="group inline-flex items-center px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all duration-300">
+                   <Link to="/progetti#progetti" className="group inline-flex items-center px-8 py-4 border-2 border-gray-600 text-gray-300 font-semibold rounded-xl hover:border-gray-500 hover:bg-gray-800 transition-all duration-300">
                      Scopri i Nostri Progetti
                      <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                    </Link>

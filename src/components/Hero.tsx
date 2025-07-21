@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import { FadeInSection } from './FadeInSection';
-import { useImagePreload } from '../hooks/useImagePreload';
+import FadeInSection from './FadeInSection';
+import useImagePreload from '../hooks/useImagePreload';
 
 export default function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
@@ -128,12 +128,12 @@ export default function Hero() {
   const currentLink = linkData[currentImage];
 
   return (
-    <section id="home" className="relative h-[85vh] flex items-center justify-end overflow-hidden pt-20">
+    <section id="home" className="relative h-[85vh] flex items-center justify-end overflow-hidden pt-20 bg-[#0d0d0d]">
+      {/* Added black background to prevent white flashing during image loading */}
+      <div className="absolute inset-0 bg-[#0d0d0d] z-0"></div>
       {/* Background Image */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className={`flex w-[200%] h-full transition-transform duration-700 ease-out hardware-accelerated ${
-          isTransitioning ? 'duration-1000' : ''
-        }`} 
+      <div className="absolute inset-0 z-1 overflow-hidden bg-[#0d0d0d]">
+        <div className={`flex w-[200%] h-full transition-transform duration-700 ease-out hardware-accelerated ${isTransitioning ? 'duration-1000' : ''}`} 
              style={{ 
                transform: `translateX(-${currentImage * 50}%)`,
                transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -142,18 +142,16 @@ export default function Hero() {
           {images.map((image, index) => (
             <div 
               key={index}
-              className="w-1/2 h-full flex-shrink-0 relative"
+              className="w-1/2 h-full flex-shrink-0 relative bg-[#0d0d0d]"
             >
               {/* Placeholder per caricamento */}
-              {!isImageLoaded(image) && (
-                <div className="absolute inset-0 bg-gray-300 image-loading" />
+              {!isImageLoaded(index) && (
+                <div className="absolute inset-0 bg-[#0d0d0d] image-loading" />
               )}
               
               {/* Immagine ottimizzata con hardware acceleration */}
               <div
-                className={`w-full h-full bg-cover bg-center bg-no-repeat grayscale-image transition-opacity duration-300 hardware-accelerated ${
-                  isImageLoaded(image) ? 'opacity-100' : 'opacity-0'
-                }`}
+                className={`w-full h-full bg-cover bg-center bg-no-repeat grayscale-image transition-opacity duration-300 hardware-accelerated ${isImageLoaded(index) ? 'opacity-100' : 'opacity-0'}`}
                 style={{ 
                   backgroundImage: `url('${image}')`,
                   transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -166,8 +164,8 @@ export default function Hero() {
           ))}
         </div>
         {/* Separatore con opacità diverse */}
-        <div className="absolute inset-y-0 left-0 w-1/2 bg-black/30 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-1/2 bg-black/70 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-1/2 bg-black/40 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-1/2 bg-black/80 pointer-events-none" />
       </div>
 
       {/* Content */}
@@ -205,7 +203,7 @@ export default function Hero() {
       {/* Scroll Indicator */}
       <FadeInSection delay={400} triggerOnce={false}>
         <div className="absolute top-24 left-1/2 transform -translate-x-1/2 text-red-500 animate-bounce z-50">
-          <div className="bg-white/30 p-2 rounded-full">
+          <div className="bg-[#0d0d0d]/30 p-2 rounded-full">
             <ChevronDown className="w-16 h-16" />
           </div>
         </div>
@@ -217,7 +215,7 @@ export default function Hero() {
         className="absolute bottom-8 right-16 z-20 flex items-center space-x-2 cursor-pointer"
         onMouseDown={handleMouseDown}
       >
-        <div className="w-24 h-1 flex items-center">
+        <div className="w-24 h-1 flex items-center bg-[#0d0d0d]/50 rounded-full">
           <div 
             className="h-1 rounded-full bg-red-600 transition-all duration-300"
             style={{ width: `${(currentImage + 1) * (100 / images.length)}%` }}

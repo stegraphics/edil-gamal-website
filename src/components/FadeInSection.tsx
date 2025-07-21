@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useInView } from '../hooks/useInView';
+import useInView from '../hooks/useInView';
 
 interface FadeInSectionProps {
   children: ReactNode;
@@ -13,7 +13,7 @@ interface FadeInSectionProps {
  * Componente che aggiunge un effetto di dissolvenza elegante quando
  * l'elemento entra nel viewport durante lo scroll.
  */
-export function FadeInSection({
+function FadeInSection({
   children,
   delay = 0,
   threshold = 0.1,
@@ -34,3 +34,5 @@ export function FadeInSection({
     </div>
   );
 }
+
+export default FadeInSection;

@@ -1,33 +1,22 @@
 // Servizio per la gestione delle email con EmailJS
 import emailjs from '@emailjs/browser';
 
-// IMPORTANTE: Sostituisci questi valori con quelli del tuo account EmailJS
-// Per ottenere questi valori:
-// 1. Crea un account su https://www.emailjs.com/
-// 2. Crea un servizio email (Gmail, Outlook, ecc.) e ottieni il SERVICE_ID:
-//    - Vai su Email Services nel dashboard
-//    - Clicca su "Add New Service"
-//    - Seleziona il tuo provider email (Gmail, Outlook, ecc.)
-//    - Segui le istruzioni per connettere il tuo account email
-//    - Copia il SERVICE_ID generato
-// 3. Crea un template email e ottieni il TEMPLATE_ID:
-//    - Vai su Email Templates nel dashboard
-//    - Clicca su "Create New Template"
-//    - Personalizza il template con i campi: {{from_name}}, {{from_email}}, {{from_phone}}, {{client_type}}, {{message}}
-//    - Imposta il destinatario come info@edilgamal.it
-//    - Copia il TEMPLATE_ID dalla scheda Settings
-// 4. Ottieni la tua PUBLIC_KEY dalla sezione Account
-//    - Vai su Account > API Keys
-//    - Copia la tua Public Key
-const PUBLIC_KEY = 'your_public_key';
-const SERVICE_ID = 'your_service_id';
-const TEMPLATE_ID = 'your_template_id';
+// Configurazione EmailJS
+// Questi valori dovrebbero essere sostituiti con quelli reali del tuo account EmailJS
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'your_public_key';
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'your_service_id';
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'your_template_id';
 
 // Initialize EmailJS
 export const initEmailJS = () => {
-  emailjs.init({
-    publicKey: PUBLIC_KEY,
-  });
+  try {
+    emailjs.init({
+      publicKey: PUBLIC_KEY,
+    });
+    console.log('EmailJS initialized successfully');
+  } catch (error) {
+    console.error('Failed to initialize EmailJS:', error);
+  }
 };
 
 // Interfaccia per i parametri del template
@@ -42,6 +31,12 @@ export interface EmailTemplateParams {
 
 // Funzione per inviare email
 export const sendEmail = (templateParams: EmailTemplateParams) => {
+  // Verifica se le chiavi sono state configurate correttamente
+  if (PUBLIC_KEY === 'your_public_key' || SERVICE_ID === 'your_service_id' || TEMPLATE_ID === 'your_template_id') {
+    console.warn('EmailJS non è configurato correttamente. Verifica le chiavi API.');
+    return Promise.reject(new Error('EmailJS non è configurato correttamente'));
+  }
+  
   return emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, {
     publicKey: PUBLIC_KEY,
   });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Calendar, User } from 'lucide-react';
+import FadeInSection from './FadeInSection';
 
 const news = [
   {
@@ -30,22 +31,23 @@ const news = [
 
 export default function NewsPreview() {
   return (
-    <section id="news" className="py-20 bg-white">
+    <section className="py-20 bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="font-heading text-3xl font-bold text-gray-900 mb-3 tracking-tight">
-            Ultime <span className="text-red-600">News</span>
-          </h2>
-          <p className="font-body text-base text-gray-800 max-w-2xl mx-auto tracking-wide">
-            Resta aggiornato sulle nostre ultime novità, progetti e iniziative
-          </p>
-        </div>
-
+        <FadeInSection threshold={0.1} triggerOnce={false}>
+          <div className="text-center mb-16">
+            <h2 className="font-heading text-4xl font-bold text-white mb-4 tracking-tight">
+              Ultime <span className="text-red-600">novità</span>
+            </h2>
+            <p className="font-body text-lg text-gray-300 max-w-3xl mx-auto tracking-wide">
+              Resta aggiornato sulle nostre attività, progetti e iniziative nel settore delle costruzioni
+            </p>
+          </div>
+        </FadeInSection>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {news.map((article) => (
             <article
               key={article.id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group"
+              className="bg-black rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group border border-gray-800"
             >
               <div className="relative overflow-hidden">
                 <img
@@ -55,17 +57,17 @@ export default function NewsPreview() {
                 />
               </div>
               <div className="p-6">
-                <div className="flex items-center text-gray-700 text-sm mb-3">
+                <div className="flex items-center text-gray-400 text-sm mb-3">
                   <Calendar className="w-4 h-4 mr-2" />
                   <span className="font-body tracking-wide">{article.date}</span>
                   <span className="mx-2">•</span>
                   <User className="w-4 h-4 mr-2" />
                   <span className="font-body tracking-wide">{article.author}</span>
                 </div>
-                <h3 className="font-heading text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors duration-200 tracking-tight">
+                <h3 className="font-heading text-xl font-bold text-white mb-3 group-hover:text-red-600 transition-colors duration-200 tracking-tight">
                   {article.title}
                 </h3>
-                <p className="font-body text-gray-800 mb-4 leading-relaxed tracking-wide">
+                <p className="font-body text-gray-300 mb-4 leading-relaxed tracking-wide">
                   {article.excerpt.replace('EDIL GAMAL COSTRUZIONI', 'EDIL GAMAL COSTRUZIONI')}
                 </p>
                 <a

@@ -1,9 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import { MapPin, Phone, Mail, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import FadeInSection from '../components/FadeInSection';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { FadeInSection } from '../components/FadeInSection';
-import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { initEmailJS, sendEmail, EmailTemplateParams } from '../services/emailService';
+
+// Risolve il problema dell'icona predefinita mancante in Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+});
+
+// Crea un'icona personalizzata per il marker che corrisponda allo stile del sito
+const customIcon = new L.DivIcon({
+  className: 'custom-div-icon',
+  html: `
+    <div style="background-color: #f87171; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 3px 6px rgba(0,0,0,0.5);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+      </svg>
+    </div>
+  `,
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32]
+});
 
 export default function Contacts() {
   // Inizializza EmailJS
@@ -17,7 +44,6 @@ export default function Contacts() {
       window.scrollTo(0, 0);
     }
   }, []);
-
   const [formData, setFormData] = useState({
     nome: '',
     tipologia: '',
@@ -27,7 +53,7 @@ export default function Contacts() {
     privacy: false,
     trattamento: false
   });
-  
+
   const [submitStatus, setSubmitStatus] = useState({
     submitted: false,
     success: false,
@@ -48,7 +74,7 @@ export default function Contacts() {
     e.preventDefault();
     
     // Validazione dei campi obbligatori
-    if (!formData.nome || !formData.email || !formData.telefono || !formData.tipologia || !formData.messaggio || !formData.privacy || !formData.trattamento) {
+    if (!formData.nome || !formData.email || !formData.telefono || !formData.tipologia || !formData.messaggio || !formData.privacy) {
       setSubmitStatus({
         submitted: true,
         success: false,
@@ -129,18 +155,18 @@ export default function Contacts() {
         </section>
 
         {/* Contact form and info */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-[#0d0d0d]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Contact form */}
               <FadeInSection>
-                <div className="bg-gray-50 p-8 rounded-lg">
-                  <h2 className="font-heading text-2xl font-bold text-gray-900 mb-6">
+                <div className="bg-[#0d0d0d] p-8 rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                  <h2 className="font-heading text-2xl font-bold text-white mb-6">
                     Invia un messaggio
                   </h2>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                      <label htmlFor="nome" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="nome" className="block text-sm font-medium text-gray-300 mb-2">
                         Nome e Cognome*
                       </label>
                       <input
@@ -150,12 +176,12 @@ export default function Contacts() {
                         required
                         value={formData.nome}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-transparent text-white rounded-lg shadow-[inset_0_2px_10px_rgba(0,0,0,0.7)] focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="tipologia" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="tipologia" className="block text-sm font-medium text-gray-300 mb-2">
                         Tipologia di cliente*
                       </label>
                       <select
@@ -164,18 +190,18 @@ export default function Contacts() {
                         required
                         value={formData.tipologia}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-transparent text-white rounded-lg shadow-[inset_0_2px_10px_rgba(0,0,0,0.7)] focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
+                        style={{ color: "white" }}
                       >
-                        <option value="">Seleziona...</option>
-                        <option value="privato">Privato</option>
-                        <option value="azienda">Azienda</option>
-                        <option value="ente-pubblico">Ente Pubblico</option>
-                        <option value="altro">Altro</option>
+                        <option value="" style={{ backgroundColor: "#1a1a1a", color: "white" }}>Seleziona...</option>
+                        <option value="Privato" style={{ backgroundColor: "#1a1a1a", color: "white" }}>Privato</option>
+                        <option value="Azienda" style={{ backgroundColor: "#1a1a1a", color: "white" }}>Azienda</option>
+                        <option value="Ente pubblico" style={{ backgroundColor: "#1a1a1a", color: "white" }}>Ente pubblico</option>
                       </select>
                     </div>
 
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
                         Email*
                       </label>
                       <input
@@ -185,12 +211,12 @@ export default function Contacts() {
                         required
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-transparent text-white rounded-lg shadow-[inset_0_2px_10px_rgba(0,0,0,0.7)] focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="telefono" className="block text-sm font-medium text-gray-300 mb-2">
                         Telefono*
                       </label>
                       <input
@@ -200,12 +226,12 @@ export default function Contacts() {
                         required
                         value={formData.telefono}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-transparent text-white rounded-lg shadow-[inset_0_2px_10px_rgba(0,0,0,0.7)] focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="messaggio" className="block text-sm font-medium text-gray-700 mb-2">
+                      <label htmlFor="messaggio" className="block text-sm font-medium text-gray-300 mb-2">
                         Messaggio*
                       </label>
                       <textarea
@@ -215,7 +241,7 @@ export default function Contacts() {
                         rows={5}
                         value={formData.messaggio}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-transparent text-white rounded-lg shadow-[inset_0_2px_10px_rgba(0,0,0,0.7)] focus:ring-1 focus:ring-red-500 focus:border-red-500 focus:outline-none"
                       ></textarea>
                     </div>
 
@@ -228,31 +254,21 @@ export default function Contacts() {
                           required
                           checked={formData.privacy}
                           onChange={handleInputChange}
-                          className="mt-1 h-4 w-4 text-red-600 focus:ring-1 focus:ring-red-500 border-gray-300 rounded"
+                          className="h-5 w-5 text-red-600 rounded mt-1 shadow-[inset_0_1px_3px_rgba(0,0,0,0.7)] focus:ring-red-500"
                         />
-                        <label htmlFor="privacy" className="ml-2 text-sm text-gray-700">
-                          Presa visione dell'informativa Privacy* <a href="#" className="text-red-600 hover:underline">(leggi)</a>
+                        <label htmlFor="privacy" className="ml-3 text-sm text-gray-300">
+                          Acconsento al trattamento dei dati personali secondo la{" "}
+                          <a href="/privacy-policy" className="text-red-500 hover:text-red-400 underline">
+                            Privacy Policy
+                          </a>
+                          *
                         </label>
                       </div>
-                      <div className="flex items-start">
-                        <input
-                          type="checkbox"
-                          id="trattamento"
-                          name="trattamento"
-                          required
-                          checked={formData.trattamento}
-                          onChange={handleInputChange}
-                          className="mt-1 h-4 w-4 text-red-600 focus:ring-1 focus:ring-red-500 border-gray-300 rounded"
-                        />
-                        <label htmlFor="trattamento" className="ml-2 text-sm text-gray-700">
-                          Autorizzazione al trattamento dati personali* <a href="#" className="text-red-600 hover:underline">(leggi)</a>
-                        </label>
-                      </div>
-                      <p className="text-xs text-gray-500">* Campi obbligatori</p>
+                      <p className="text-xs text-gray-400">* Campi obbligatori</p>
                     </div>
 
                     {submitStatus.submitted && (
-                      <div className={`p-4 mb-4 rounded-lg flex items-center ${submitStatus.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+                      <div className={`p-4 mb-4 rounded-lg flex items-center ${submitStatus.success ? 'bg-green-900/50 text-green-300' : 'bg-red-900/50 text-red-300'}`}>
                         {submitStatus.success ? (
                           <CheckCircle className="w-5 h-5 mr-2 flex-shrink-0" />
                         ) : (
@@ -275,8 +291,8 @@ export default function Contacts() {
 
               {/* Contact info */}
               <FadeInSection delay={200}>
-                <div>
-                  <h2 className="font-heading text-2xl font-bold text-gray-900 mb-6">
+                <div className="bg-[#0d0d0d] p-8 rounded-lg shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                  <h2 className="font-heading text-2xl font-bold text-white mb-6">
                     Informazioni di contatto
                   </h2>
                   <div className="space-y-6">
@@ -285,8 +301,8 @@ export default function Contacts() {
                         <MapPin className="w-6 h-6 text-red-600 mt-1" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">Indirizzo</h3>
-                        <p className="text-gray-600">
+                        <h3 className="font-semibold text-white mb-1">Indirizzo</h3>
+                        <p className="text-gray-300">
                           Via Puccini 9<br />
                           Cinisello Balsamo 22092 (MI)
                         </p>
@@ -298,8 +314,8 @@ export default function Contacts() {
                         <Phone className="w-6 h-6 text-red-600 mt-1" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">Telefono</h3>
-                        <p className="text-gray-600">+39 340 603 8768</p>
+                        <h3 className="font-semibold text-white mb-1">Telefono</h3>
+                        <p className="text-gray-300">+39 340 603 8768</p>
                       </div>
                     </div>
 
@@ -308,8 +324,8 @@ export default function Contacts() {
                         <Mail className="w-6 h-6 text-red-600 mt-1" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                        <p className="text-gray-600">info@edilgamal.it</p>
+                        <h3 className="font-semibold text-white mb-1">Email</h3>
+                        <p className="text-gray-300">info@edilgamal.it</p>
                       </div>
                     </div>
 
@@ -318,9 +334,10 @@ export default function Contacts() {
                         <Clock className="w-6 h-6 text-red-600 mt-1" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">Orari di apertura</h3>
-                        <p className="text-gray-600">
-                          Lunedì - Venerdì: 8:00 - 18:00
+                        <h3 className="font-semibold text-white mb-1">Orari</h3>
+                        <p className="text-gray-300">
+                          Lunedì - Venerdì: 8:00 - 18:00<br />
+                          Sabato: 8:00 - 12:00
                         </p>
                       </div>
                     </div>
@@ -328,18 +345,45 @@ export default function Contacts() {
 
                   {/* Interactive Map */}
                   <div className="mt-8">
-                    <h3 className="font-semibold text-gray-900 mb-4">Dove siamo</h3>
-                    <div className="h-64 rounded-lg overflow-hidden shadow-lg">
-                      <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2796.8!2d9.2!3d45.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786c1c1c1c1c1c1%3A0x1c1c1c1c1c1c1c1c!2sVia%20Puccini%209%2C%2020092%20Cinisello%20Balsamo%20MI%2C%20Italy!5e0!3m2!1sen!2sit!4v1234567890123!5m2!1sen!2sit"
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        title="EDIL GAMAL - Via Puccini 9, Cinisello Balsamo"
-                      ></iframe>
+                    <h3 className="font-semibold text-white mb-4">Dove siamo</h3>
+                    <div className="h-64 rounded-lg overflow-hidden shadow-lg border-2 border-red-600 relative">
+                      <MapContainer 
+                        center={[45.553801, 9.212469]} 
+                        zoom={15} 
+                        style={{ height: '100%', width: '100%', zIndex: 1 }}
+                        scrollWheelZoom={true}
+                      >
+                        <TileLayer
+                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker 
+                          position={[45.553801, 9.212469]}
+                          icon={customIcon}
+                        >
+                          <Popup>
+                            <div className="text-center">
+                              <strong>EDIL GAMAL</strong><br />
+                              Via Puccini 9<br />
+                              Cinisello Balsamo 22092 (MI)
+                            </div>
+                          </Popup>
+                        </Marker>
+                      </MapContainer>
+                      
+                      <div className="absolute bottom-4 right-4 z-[999]">
+                        <a 
+                          href="https://www.google.com/maps/place/Via+Puccini+9,+20092+Cinisello+Balsamo+MI/@45.553801,9.212469,17z/" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="px-3 py-1 bg-red-600 text-white text-sm rounded-md shadow-lg hover:bg-red-700 transition-colors duration-200 flex items-center space-x-1"
+                        >
+                          <span>Google Maps</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -3,6 +3,7 @@
   height: 100px;
   object-fit: contain;
   transition: all 0.3s;
+  filter: brightness(0) invert(1); /* Rende le icone bianche */
 }
 
 @media (min-width: 768px) {
@@ -33,18 +34,6 @@
   .alberghiero-icon {
     width: 180px;
     height: 180px;
-  }
-}
-
-.pubblico-icon {
-  width: 140px;
-  height: 140px;
-}
-
-@media (min-width: 768px) {
-  .pubblico-icon {
-    width: 200px;
-    height: 200px;
   }
 }
 
@@ -110,7 +99,7 @@
 
 .sector-text {
   font-weight: bold;
-  color: black;
+  color: white;
   font-size: 1.125rem;
   margin-top: 1.5rem;
   transition: color 0.15s;

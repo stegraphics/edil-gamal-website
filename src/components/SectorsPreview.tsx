@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FadeInSection } from './FadeInSection';
+import FadeInSection from './FadeInSection';
 import './SectorsPreview.css';
 
 // Utilizziamo il file CSS personalizzato per gestire l'effetto hover
@@ -11,15 +11,15 @@ export default function SectorsPreview() {
   // Tutti gli effetti hover sono gestiti tramite classi Tailwind CSS
 
   return (
-    <section className="py-16 bg-white border-t border-gray-100">
+    <section className="py-16 bg-[#0d0d0d]">
       <FadeInSection threshold={0.05} triggerOnce={false}>
         <div className="max-w-full mx-auto px-0">
           <div className="text-center mb-12">
-            <h2 className="font-heading text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+            <h2 className="font-heading text-4xl font-bold text-white mb-4 tracking-tight">
               <span className="text-red-600">Settori</span>
             </h2>
-            <p className="font-body text-lg text-gray-800 max-w-3xl mx-auto tracking-wide">
-              Esplora i diversi settori in cui operiamo con <span className="text-gray-900 font-semibold">competenza</span> e <span className="text-gray-900 font-semibold">professionalità</span>
+            <p className="font-body text-lg text-gray-300 max-w-3xl mx-auto tracking-wide">
+              Esplora i diversi settori in cui operiamo con <span className="text-white font-semibold">competenza</span> e <span className="text-white font-semibold">professionalità</span>
             </p>
           </div>
 

@@ -32,18 +32,18 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.08)]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
       {/* Banner più grande */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`flex items-center justify-between transition-all duration-300 ease-in-out ${isCompact ? 'h-20 py-3' : 'h-32 py-8'}`}>
+        <div className={`flex items-center justify-between transition-all duration-300 ease-in-out ${isCompact ? 'h-18 py-2' : 'h-22 py-4'}`}>
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link to="/" onClick={() => window.scrollTo(0, 0)}>
                 <img 
-                  src="/logo-bene.gif" 
+                  src="/Logo definitivo centrato.png" 
                   alt="EDIL GAMAL Logo" 
-                  className={`transition-all duration-300 ease-in-out ${isCompact ? 'h-48' : 'h-64'}`}
+                  className={`transition-all duration-300 ease-in-out ${isCompact ? 'h-14' : 'h-16'}`}
                 />
               </Link>
             </div>
@@ -57,7 +57,7 @@ export default function Header() {
                   <Link
                     key={item.name}
                     to={item.path}
-                    className={`font-body text-gray-800 hover:text-red-600 px-2 py-1 text-base font-medium transition-colors duration-200 tracking-wide ${location.pathname === item.path ? 'text-red-600' : ''}`}
+                    className={`font-body text-gray-300 hover:text-red-400 px-2 py-1 text-base font-medium transition-colors duration-200 tracking-wide ${location.pathname === item.path ? 'text-red-400' : ''}`}
                     onClick={() => window.scrollTo(0, 0)}
                   >
                     {item.name}
@@ -66,7 +66,7 @@ export default function Header() {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="font-body text-gray-800 hover:text-red-600 px-2 py-1 text-base font-medium transition-colors duration-200 tracking-wide"
+                    className="font-body text-gray-300 hover:text-red-400 px-2 py-1 text-base font-medium transition-colors duration-200 tracking-wide"
                     onClick={() => window.scrollTo(0, 0)}
                   >
                     {item.name}
@@ -78,7 +78,7 @@ export default function Header() {
 
           {/* Right side items */}
           <div className="hidden md:flex items-center">
-            <button className="font-body flex items-center space-x-2 text-gray-700 hover:text-red-600 transition-colors duration-200">
+            <button className="font-body flex items-center space-x-2 text-gray-300 hover:text-red-400 transition-colors duration-200">
               <Globe className="w-6 h-6" />
               <span className="text-base tracking-wide">IT</span>
             </button>
@@ -88,7 +88,7 @@ export default function Header() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-red-600 focus:outline-none focus:text-red-600"
+              className="text-gray-300 hover:text-red-400 focus:outline-none focus:text-red-400"
             >
               {isMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
             </button>
@@ -98,14 +98,14 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t">
+        <div className="md:hidden bg-black border-t border-gray-800">
           <div className="px-2 pt-2 pb-3 space-y-0.5">
             {navItems.map((item) => (
               item.path ? (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`font-body text-gray-800 hover:text-red-600 block px-2 py-1 text-base font-medium tracking-wide ${location.pathname === item.path ? 'text-red-600' : ''}`}
+                  className={`font-body text-gray-300 hover:text-red-400 block px-2 py-1 text-base font-medium tracking-wide ${location.pathname === item.path ? 'text-red-400' : ''}`}
                   onClick={() => {
                     setIsMenuOpen(false);
                     window.scrollTo(0, 0);
@@ -117,7 +117,7 @@ export default function Header() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="font-body text-gray-800 hover:text-red-600 block px-2 py-1 text-base font-medium tracking-wide"
+                  className="font-body text-gray-300 hover:text-red-400 block px-2 py-1 text-base font-medium tracking-wide"
                   onClick={() => {
                     setIsMenuOpen(false);
                     window.scrollTo(0, 0);

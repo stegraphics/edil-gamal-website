@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, MapPin, Calendar } from 'lucide-react';
-import { FadeInSection } from './FadeInSection';
+import FadeInSection from './FadeInSection';
 
 const projects = [
   {
@@ -55,16 +55,15 @@ const projects = [
 
 export default function ProjectsPreview() {
   return (
-    <section id="projects" className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInSection threshold={0.1} triggerOnce={false}>
-          <div className="text-center mb-12">
-            <h2 className="font-heading text-3xl font-bold text-gray-900 mb-3 tracking-tight">
-              Progetti <span className="text-red-600">recenti</span>
+          <div className="text-center mb-16">
+            <h2 className="font-heading text-4xl font-bold text-white mb-4 tracking-tight">
+              I nostri <span className="text-red-600">progetti</span>
             </h2>
-            <p className="font-body text-base text-gray-800 max-w-2xl mx-auto tracking-wide">
-              Scopri alcuni dei nostri lavori più significativi, realizzati con 
-              passione e competenza tecnica
+            <p className="font-body text-lg text-gray-300 max-w-3xl mx-auto tracking-wide">
+              Scopri alcuni dei nostri lavori più significativi che dimostrano la nostra <span className="text-white font-semibold">eccellenza</span> e <span className="text-white font-semibold">attenzione ai dettagli</span>
             </p>
           </div>
         </FadeInSection>
