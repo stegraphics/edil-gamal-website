@@ -27,7 +27,7 @@ export default function Header() {
   
   const navItems = [
     { name: 'Home', href: '/', path: '/' },
-    { name: 'Chi siamo', href: isHomePage ? '/#about' : '/chi-siamo', path: '/chi-siamo' },
+    { name: 'Chi siamo', href: '/chi-siamo', path: '/chi-siamo' },
     { name: 'Progetti', href: '/progetti', path: '/progetti' },
     { name: 'Approfondimenti', href: '/approfondimenti', path: '/approfondimenti' },
     { name: 'Contatti', href: '/contatti', path: '/contatti' }

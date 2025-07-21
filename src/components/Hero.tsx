@@ -121,7 +121,7 @@ export default function Hero() {
 
   // Definisci i link in base all'immagine corrente (memorizzato)
   const linkData = useMemo(() => [
-    { text: 'Azienda', href: '#about' },
+    { text: 'Azienda', href: '/chi-siamo' },
     { text: 'Progetti', href: '#projects' }
   ], []);
 
