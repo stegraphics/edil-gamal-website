@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { handleHashNavigation, scrollToTop } from '../utils/scrollHelper';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,11 +22,12 @@ export default function Header() {
   }, []);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
   
   const navItems = [
     { name: 'Home', href: '/', path: '/' },
-    { name: 'Chi siamo', href: isHomePage ? '#about' : '/chi-siamo', path: '/chi-siamo' },
+    { name: 'Chi siamo', href: isHomePage ? '/#about' : '/chi-siamo', path: '/chi-siamo' },
     { name: 'Progetti', href: '/progetti', path: '/progetti' },
     { name: 'Approfondimenti', href: '/approfondimenti', path: '/approfondimenti' },
     { name: 'Contatti', href: '/contatti', path: '/contatti' }
@@ -39,7 +41,11 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <Link to="/" onClick={() => window.scrollTo(0, 0)}>
+              <Link to="/" onClick={(e) => {
+                e.preventDefault();
+                navigate('/');
+                scrollToTop();
+              }}>
                 <img 
                   src="/Logo definitivo centrato.png" 
                   alt="EDIL GAMAL Logo" 
@@ -58,7 +64,15 @@ export default function Header() {
                     key={item.name}
                     to={item.path}
                     className={`font-body text-gray-300 hover:text-red-400 px-2 py-1 text-base font-medium transition-colors duration-200 tracking-wide ${location.pathname === item.path ? 'text-red-400' : ''}`}
-                    onClick={() => window.scrollTo(0, 0)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (item.href.includes('#')) {
+                        handleHashNavigation(item.href, navigate);
+                      } else {
+                        navigate(item.path);
+                        scrollToTop();
+                      }
+                    }}
                   >
                     {item.name}
                   </Link>
@@ -67,7 +81,10 @@ export default function Header() {
                     key={item.name}
                     href={item.href}
                     className="font-body text-gray-300 hover:text-red-400 px-2 py-1 text-base font-medium transition-colors duration-200 tracking-wide"
-                    onClick={() => window.scrollTo(0, 0)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleHashNavigation(item.href);
+                    }}
                   >
                     {item.name}
                   </a>
@@ -106,9 +123,15 @@ export default function Header() {
                   key={item.name}
                   to={item.path}
                   className={`font-body text-gray-300 hover:text-red-400 block px-2 py-1 text-base font-medium tracking-wide ${location.pathname === item.path ? 'text-red-400' : ''}`}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     setIsMenuOpen(false);
-                    window.scrollTo(0, 0);
+                    if (item.href.includes('#')) {
+                      handleHashNavigation(item.href, navigate);
+                    } else {
+                      navigate(item.path);
+                      scrollToTop();
+                    }
                   }}
                 >
                   {item.name}
@@ -118,9 +141,10 @@ export default function Header() {
                   key={item.name}
                   href={item.href}
                   className="font-body text-gray-300 hover:text-red-400 block px-2 py-1 text-base font-medium tracking-wide"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     setIsMenuOpen(false);
-                    window.scrollTo(0, 0);
+                    handleHashNavigation(item.href);
                   }}
                 >
                   {item.name}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import FadeInSection from './FadeInSection';
 import useImagePreload from '../hooks/useImagePreload';
+import { handleHashNavigation } from '../utils/scrollHelper';
 
 export default function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
@@ -190,7 +191,10 @@ export default function Hero() {
               <a
                 href={currentLink.href}
                 className="font-body text-sm uppercase relative group tracking-widest font-semibold"
-                onClick={() => window.scrollTo(0, 0)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleHashNavigation(currentLink.href);
+                }}
               >
                 {currentLink.text}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>

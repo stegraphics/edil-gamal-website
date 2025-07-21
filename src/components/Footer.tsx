@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import CustomFooterIcon from './CustomFooterIcon';
+import { handleHashNavigation, scrollToTop } from '../utils/scrollHelper';
 
 export default function Footer() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
   
   return (
@@ -13,7 +15,11 @@ export default function Footer() {
           {/* Company Info */}
           <div className="pl-2 sm:pl-0">
             <div className="mb-3 -ml-4 sm:-ml-8">
-              <Link to="/" onClick={() => window.scrollTo(0, 0)}>
+              <Link to="/" onClick={(e) => {
+                e.preventDefault();
+                navigate('/');
+                scrollToTop();
+              }}>
                 <img src="/Logo definitivo centrato.png" alt="Edil Gamal Logo" className="h-24" />
               </Link>
             </div>
@@ -34,19 +40,58 @@ export default function Footer() {
             <ul className="space-y-2 font-body tracking-wide">
               <li>
                 {isHomePage ? (
-                  <a href="#home" className="text-gray-300 hover:text-white transition-colors duration-200">Home</a>
+                  <a 
+                    href="#home" 
+                    className="text-gray-300 hover:text-white transition-colors duration-200"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleHashNavigation('#home');
+                    }}
+                  >Home</a>
                 ) : (
-                  <Link to="/" onClick={() => window.scrollTo(0, 0)} className="text-gray-300 hover:text-white transition-colors duration-200">Home</Link>
+                  <Link 
+                    to="/" 
+                    className="text-gray-300 hover:text-white transition-colors duration-200"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate('/');
+                      scrollToTop();
+                    }}
+                  >Home</Link>
                 )}
               </li>
               <li>
-                <Link to="/chi-siamo" onClick={() => window.scrollTo(0, 0)} className="text-gray-300 hover:text-white transition-colors duration-200">Chi siamo</Link>
+                <Link 
+                  to="/chi-siamo" 
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/chi-siamo');
+                    scrollToTop();
+                  }}
+                >Chi siamo</Link>
               </li>
               <li>
-                <Link to="/approfondimenti" onClick={() => window.scrollTo(0, 0)} className="text-gray-300 hover:text-white transition-colors duration-200">Approfondimenti</Link>
+                <Link 
+                  to="/approfondimenti" 
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/approfondimenti');
+                    scrollToTop();
+                  }}
+                >Approfondimenti</Link>
               </li>
               <li>
-                <Link to="/contatti" onClick={() => window.scrollTo(0, 0)} className="text-gray-300 hover:text-white transition-colors duration-200">Contatti</Link>
+                <Link 
+                  to="/contatti" 
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/contatti');
+                    scrollToTop();
+                  }}
+                >Contatti</Link>
               </li>
             </ul>
           </div>
@@ -96,9 +141,30 @@ export default function Footer() {
               </div>
             </div>
             <div className="flex space-x-6 text-sm font-body tracking-wide pl-2 sm:pl-0">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>Cookie Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200" onClick={() => window.scrollTo(0, 0)}>GDPR</a>
+              <a 
+                href="#" 
+                className="text-gray-400 hover:text-white transition-colors duration-200" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToTop();
+                }}
+              >Privacy Policy</a>
+              <a 
+                href="#" 
+                className="text-gray-400 hover:text-white transition-colors duration-200" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToTop();
+                }}
+              >Cookie Policy</a>
+              <a 
+                href="#" 
+                className="text-gray-400 hover:text-white transition-colors duration-200" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToTop();
+                }}
+              >GDPR</a>
             </div>
           </div>
         </div>

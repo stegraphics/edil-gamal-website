@@ -5,10 +5,12 @@ import AboutUs from './pages/AboutUs';
 import Contacts from './pages/Contacts';
 import Insights from './pages/Insights';
 import Projects from './pages/Projects';
+import ScrollToHashElement from './components/ScrollToHashElement';
 
 function App() {
   return (
     <Router>
+      <ScrollToHashElement />
       <div className="app-container">
         <Routes>
           <Route path="/" element={<Home />} />

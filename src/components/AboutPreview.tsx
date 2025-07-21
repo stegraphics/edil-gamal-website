@@ -1,9 +1,11 @@
 import React from 'react';
 import { ArrowRight, Award, Clock, Users } from 'lucide-react';
 import FadeInSection from './FadeInSection';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { scrollToTop } from '../utils/scrollHelper';
 
 export default function AboutPreview() {
+  const navigate = useNavigate();
   return (
     <section id="about" className="py-20 bg-[#0d0d0d]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,9 +43,13 @@ export default function AboutPreview() {
               </div>
               <FadeInSection delay={400} triggerOnce={false}>
                 <Link
-                  to="/chi-siamo#top"
+                  to="/chi-siamo"
                   className="font-body inline-flex items-center text-red-600 hover:text-red-700 font-semibold group tracking-wide"
-                  onClick={() => window.scrollTo(0, 0)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/chi-siamo');
+                    scrollToTop();
+                  }}
                 >
                   Leggi di più
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
