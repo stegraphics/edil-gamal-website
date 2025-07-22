@@ -228,7 +228,7 @@ export default function Insights() {
           <FadeInSection threshold={0.1} triggerOnce={false}>
             {/* Carousel Container */}
             <div 
-              className="relative overflow-hidden bg-white shadow-2xl mb-16 select-none carousel-container"
+              className="relative overflow-hidden bg-black shadow-2xl mb-16 select-none carousel-container"
               onMouseEnter={() => setIsAutoPlaying(false)}
               onMouseLeave={() => setIsAutoPlaying(true)}
               onTouchStart={handleTouchStart}
