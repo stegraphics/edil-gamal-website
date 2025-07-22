@@ -115,7 +115,7 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden bg-black border-t border-gray-800">
+        <div className="md:hidden bg-black">
           <div className="px-2 pt-2 pb-3 space-y-0.5">
             {navItems.map((item) => (
               item.path ? (
