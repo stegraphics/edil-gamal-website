@@ -228,12 +228,13 @@ export default function Insights() {
           <FadeInSection threshold={0.1} triggerOnce={false}>
             {/* Carousel Container */}
             <div 
-              className="relative overflow-hidden bg-white shadow-2xl mb-16 select-none"
+              className="relative overflow-hidden bg-white shadow-2xl mb-16 select-none carousel-container"
               onMouseEnter={() => setIsAutoPlaying(false)}
               onMouseLeave={() => setIsAutoPlaying(true)}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {/* Carousel Track ottimizzato */}
               <div 
@@ -309,7 +310,7 @@ export default function Insights() {
                          </div>
 
                          {/* Image Side */}
-                          <div className="relative bg-gray-100 lg:col-span-1">
+                          <div className="relative bg-gray-100 lg:col-span-1 overflow-hidden">
                             <OptimizedImage
                               src={insight.image}
                               alt={`Progetto ${insight.title}`}
@@ -448,7 +449,11 @@ export default function Insights() {
                       <span className="text-gray-300 font-medium">Materiali di prima qualità</span>
                     </div>
                   </div>
-                  <Link to="/progetti#progetti" className="group inline-flex items-center text-red-600 hover:text-red-700 font-semibold text-lg">
+                  <Link 
+                    to="/progetti" 
+                    className="group inline-flex items-center text-red-600 hover:text-red-700 font-semibold text-lg"
+                    onClick={() => setTimeout(() => window.scrollTo(0, 0), 100)}
+                  >
                     Scopri i nostri progetti
                     <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
@@ -482,7 +487,11 @@ export default function Insights() {
                      Richiedi Consulenza Gratuita
                      <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                    </Link>
-                   <Link to="/progetti#progetti" className="group inline-flex items-center px-8 py-4 border-2 border-gray-600 text-gray-300 font-semibold rounded-xl hover:border-gray-500 hover:bg-gray-800 transition-all duration-300">
+                   <Link 
+                     to="/progetti" 
+                     className="group inline-flex items-center px-8 py-4 border-2 border-gray-600 text-gray-300 font-semibold rounded-xl hover:border-gray-500 hover:bg-gray-800 transition-all duration-300"
+                     onClick={() => setTimeout(() => window.scrollTo(0, 0), 100)}
+                   >
                      Scopri i Nostri Progetti
                      <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                    </Link>

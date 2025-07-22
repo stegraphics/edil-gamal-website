@@ -67,14 +67,12 @@ function OptimizedImage({
       
       // Ottimizzazioni per il caricamento
       img.decoding = 'async';
-      img.fetchPriority = priority ? 'high' : 'auto';
+      
+      // Utilizziamo setAttribute per impostare fetchpriority in minuscolo
+      img.setAttribute('fetchpriority', priority ? 'high' : 'auto');
       
       if ('loading' in HTMLImageElement.prototype) {
         img.loading = priority ? 'eager' : 'lazy';
-      }
-      
-      if ('importance' in HTMLImageElement.prototype) {
-        img.importance = priority ? 'high' : 'auto';
       }
       
       img.onload = () => {
@@ -103,7 +101,12 @@ function OptimizedImage({
     <div 
       ref={imgRef}
       className={`relative overflow-hidden ${className}`}
-      style={style}
+      style={{
+        ...style,
+        WebkitMaskImage: 'radial-gradient(white, black)',
+        maskImage: 'radial-gradient(white, black)',
+        willChange: 'transform'
+      }}
     >
       {/* Placeholder ottimizzato */}
       {!isLoaded && (
@@ -114,9 +117,11 @@ function OptimizedImage({
           style={{ 
             filter: 'blur(2px)',
             willChange: 'opacity',
-            transform: 'translateZ(0)'
+            transform: 'translateZ(0)',
+            borderRadius: 'inherit',
+            overflow: 'hidden'
           }}
-          fetchPriority="low"
+          fetchpriority="low"
           loading="eager"
           decoding="sync"
         />
@@ -136,17 +141,17 @@ function OptimizedImage({
             transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             willChange: 'opacity, transform',
             transform: 'translateZ(0)',
-            ...style
+            borderRadius: 'inherit',
+            overflow: 'hidden'
           }}
           onLoad={() => {
             setIsLoaded(true);
             onLoad?.();
           }}
           onError={() => setHasError(true)}
-          fetchPriority={priority ? "high" : "auto"}
+          fetchpriority={priority ? "high" : "auto"}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
-          importance={priority ? "high" : "auto"}
         />
       )}
       
@@ -154,11 +159,18 @@ function OptimizedImage({
       {!isLoaded && isInView && (
         <div 
           className="absolute inset-0 bg-gray-100 animate-pulse hardware-accelerated"
-          style={{ willChange: 'opacity' }}
+          style={{ 
+            willChange: 'opacity',
+            borderRadius: 'inherit',
+            overflow: 'hidden'
+          }}
         >
           <div 
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer hardware-accelerated"
-            style={{ willChange: 'transform' }}
+            style={{ 
+              willChange: 'transform',
+              borderRadius: 'inherit'
+            }}
           ></div>
         </div>
       )}
