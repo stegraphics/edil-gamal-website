@@ -105,7 +105,9 @@ function OptimizedImage({
         ...style,
         WebkitMaskImage: 'radial-gradient(white, black)',
         maskImage: 'radial-gradient(white, black)',
-        willChange: 'transform'
+        willChange: 'transform',
+        transform: 'translateZ(0)',
+        borderRadius: 'inherit'
       }}
     >
       {/* Placeholder ottimizzato */}
