@@ -15,7 +15,7 @@ function OptimizedImage({
   alt,
   className = '',
   priority = false,
-  placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2Y3ZjdmNyIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjY2NjIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DYXJpY2FtZW50by4uLjwvdGV4dD48L3N2Zz4=',
+  placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzAwMDAwMCIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNDQ0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DYXJpY2FtZW50by4uLjwvdGV4dD48L3N2Zz4=',
   onLoad,
   style
 }: OptimizedImageProps) {
@@ -89,7 +89,7 @@ function OptimizedImage({
     return (
       <div 
         ref={imgRef}
-        className={`bg-gray-200 flex items-center justify-center ${className}`}
+        className={`bg-black flex items-center justify-center ${className}`}
         style={style}
       >
         <span className="text-gray-500 text-sm">Errore caricamento immagine</span>
@@ -172,7 +172,7 @@ function OptimizedImage({
       {/* Loading overlay ottimizzato */}
       {!isLoaded && isInView && (
         <div 
-          className="absolute inset-0 bg-gray-100 animate-pulse hardware-accelerated"
+          className="absolute inset-0 bg-black animate-pulse hardware-accelerated"
           style={{ 
             willChange: 'opacity',
             borderRadius: 'inherit',
@@ -183,7 +183,7 @@ function OptimizedImage({
           }}
         >
           <div 
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer hardware-accelerated"
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-700/20 to-transparent animate-shimmer hardware-accelerated"
             style={{ 
               willChange: 'transform',
               borderRadius: 'inherit',

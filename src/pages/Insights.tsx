@@ -310,7 +310,7 @@ export default function Insights() {
                          </div>
 
                          {/* Image Side */}
-                          <div className="relative bg-gray-100 lg:col-span-1 overflow-hidden" style={{ lineHeight: 0, fontSize: 0 }}>
+                          <div className="relative bg-black lg:col-span-1 overflow-hidden" style={{ lineHeight: 0, fontSize: 0 }}>
                             <OptimizedImage
                               src={insight.image}
                               alt={`Progetto ${insight.title}`}
