@@ -107,7 +107,11 @@ function OptimizedImage({
         maskImage: 'radial-gradient(white, black)',
         willChange: 'transform',
         transform: 'translateZ(0)',
-        borderRadius: 'inherit'
+        borderRadius: 'inherit',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        lineHeight: 0
       }}
     >
       {/* Placeholder ottimizzato */}
@@ -121,7 +125,11 @@ function OptimizedImage({
             willChange: 'opacity',
             transform: 'translateZ(0)',
             borderRadius: 'inherit',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            display: 'block',
+            verticalAlign: 'middle',
+            margin: 0,
+            padding: 0
           }}
           fetchpriority="low"
           loading="eager"
@@ -144,7 +152,11 @@ function OptimizedImage({
             willChange: 'opacity, transform',
             transform: 'translateZ(0)',
             borderRadius: 'inherit',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            display: 'block',
+            verticalAlign: 'middle',
+            margin: 0,
+            padding: 0
           }}
           onLoad={() => {
             setIsLoaded(true);
@@ -164,14 +176,21 @@ function OptimizedImage({
           style={{ 
             willChange: 'opacity',
             borderRadius: 'inherit',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            margin: 0,
+            padding: 0,
+            lineHeight: 0
           }}
         >
           <div 
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer hardware-accelerated"
             style={{ 
               willChange: 'transform',
-              borderRadius: 'inherit'
+              borderRadius: 'inherit',
+              margin: 0,
+              padding: 0,
+              lineHeight: 0,
+              overflow: 'hidden'
             }}
           ></div>
         </div>
